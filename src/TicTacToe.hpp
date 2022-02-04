@@ -2,6 +2,7 @@
 
 #include "Cell.hpp"
 #include <vector>
+#include <string>
 
 using byte = unsigned char;
 using sbyte = char;
@@ -11,8 +12,6 @@ class TicTacToe {
 		Cell m_board[3][3];
 	//	True for player X, false for player O
 		bool m_player;
-	//	Possible actions
-		std::vector<byte> actions;
 
 	//	Build Empty TicTacToe game with starting player X
 		TicTacToe();
@@ -26,4 +25,10 @@ class TicTacToe {
 	//	Take best action using minimax algorithm
 		void takeBestAction();
 		std::vector<byte>& possibleActions();
+		float minimaxValue();
+
+	//	Returns 0 if the game is still going, 1 if current player won, -1 if the opposite player won, and 2 if tie
+		char isGameOver();
+
+		std::string& toString();
 };
