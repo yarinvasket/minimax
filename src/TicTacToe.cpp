@@ -38,7 +38,48 @@ void TicTacToe::takeAction(byte a) {
 }
 
 void TicTacToe::takeBestAction() {
+	if (isGameOver()) return;
+}
 
+byte TicTacToe::minimaxValue() {
+	char c = isGameOver();
+	if (c) { //Edge cases
+		if (c == -1) return 0;
+		if (c == 1) return 2;
+		return 1;
+	}
+
+	byte max = 0;
+	byte maxAction;
+	for (auto a : possibleActions()) {
+		TicTacToe stag(*this, a);
+		char ctag = stag.isGameOver();
+		if (ctag) {
+			if (ctag == -1) return 2;
+			if (1 > max) {
+				max = 1;
+				maxAction = a;
+			}
+			continue;
+		}
+		byte min = 2;
+		byte minAction;
+		for (auto atag : stag.possibleActions()) {
+			TicTacToe stagtag(stag, atag);
+			auto stagtagminimaxval = stagtag.minimaxValue();
+			if (stagtagminimaxval < min) {
+				min = stagtagminimaxval;
+				minAction = atag;
+			}
+		}
+
+		if (min > max) {
+			max = min;
+			maxAction = minAction;
+		}
+	}
+
+	return max;
 }
 
 std::vector<byte>& TicTacToe::possibleActions() {
@@ -52,8 +93,55 @@ std::vector<byte>& TicTacToe::possibleActions() {
 	return *actions;
 }
 
-char isGameOver() {
-	return 'F';
+char TicTacToe::isGameOver() {
+	for (byte i = 0; i < 3; i++) {
+		if (m_board[i][0] == m_board[i][1] == m_board[i][2]) {
+			Cell cell = m_board[i][0];
+			if (cell) {
+				char ret = 1;
+				if (cell == Cell::O) ret = -ret;
+				if (!m_player) ret = -ret;
+				return ret;
+			}
+		}
+
+		if (m_board[0][i] == m_board[1][i] == m_board[2][i]) {
+			Cell cell = m_board[0][i];
+			if (cell) {
+				char ret = 1;
+				if (cell == Cell::O) ret = -ret;
+				if (!m_player) ret = -ret;
+				return ret;
+			}
+		}
+	}
+
+	if (m_board[0][0] == m_board[1][1] == m_board[2][2]) {
+		Cell cell = m_board[0][0];
+		if (cell) {
+			char ret = 1;
+			if (cell == Cell::O) ret = -ret;
+			if (!m_player) ret = -ret;
+			return ret;
+		}
+	}
+
+	if (m_board[0][2] == m_board[1][1] == m_board[2][0]) {
+		Cell cell = m_board[0][2];
+		if (cell) {
+			char ret = 1;
+			if (cell == Cell::O) ret = -ret;
+			if (!m_player) ret = -ret;
+			return ret;
+		}
+	}
+
+	for (byte i = 0; i < 3; i++) {
+		for (byte j = 0; j < 3; j++) {
+			if (!m_board[i][j]) return 0;
+		}
+	}
+	return 2;
 }
 
 std::string& TicTacToe::toString() {
