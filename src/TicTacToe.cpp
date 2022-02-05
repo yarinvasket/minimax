@@ -29,6 +29,7 @@ TicTacToe::TicTacToe(TicTacToe& s, byte a) : TicTacToe::TicTacToe(s) {
 }
 
 bool TicTacToe::validateAction(byte a) {
+	if (a < 0 || a > 8) return false;
 	return m_board[a / 3][a % 3] == Cell::BLANK;
 }
 
@@ -100,7 +101,7 @@ std::shared_ptr<std::vector<byte>> TicTacToe::possibleActions() {
 
 char TicTacToe::isGameOver() {
 	for (byte i = 0; i < 3; i++) {
-		if (m_board[i][0] == m_board[i][1] == m_board[i][2]) {
+		if (m_board[i][0] == m_board[i][1] && m_board[i][1] == m_board[i][2]) {
 			Cell cell = m_board[i][0];
 			if (cell) {
 				char ret = 1;
@@ -110,7 +111,7 @@ char TicTacToe::isGameOver() {
 			}
 		}
 
-		if (m_board[0][i] == m_board[1][i] == m_board[2][i]) {
+		if (m_board[0][i] == m_board[1][i] && m_board[1][i] == m_board[2][i]) {
 			Cell cell = m_board[0][i];
 			if (cell) {
 				char ret = 1;
@@ -121,7 +122,7 @@ char TicTacToe::isGameOver() {
 		}
 	}
 
-	if (m_board[0][0] == m_board[1][1] == m_board[2][2]) {
+	if (m_board[0][0] == m_board[1][1] && m_board[1][1] == m_board[2][2]) {
 		Cell cell = m_board[0][0];
 		if (cell) {
 			char ret = 1;
@@ -131,7 +132,7 @@ char TicTacToe::isGameOver() {
 		}
 	}
 
-	if (m_board[0][2] == m_board[1][1] == m_board[2][0]) {
+	if (m_board[0][2] == m_board[1][1] && m_board[1][1] == m_board[2][0]) {
 		Cell cell = m_board[0][2];
 		if (cell) {
 			char ret = 1;
