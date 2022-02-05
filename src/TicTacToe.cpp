@@ -54,7 +54,8 @@ short TicTacToe::minimaxValue() {
 
 	byte max = 0;
 	byte maxAction;
-	for (auto a : possibleActions()) {
+	auto vec = *possibleActions();
+	for (auto a : vec) {
 		TicTacToe stag(*this, a);
 		char ctag = stag.isGameOver();
 		if (ctag) {
@@ -67,7 +68,8 @@ short TicTacToe::minimaxValue() {
 		}
 		byte min = 2;
 		byte minAction;
-		for (auto atag : stag.possibleActions()) {
+		auto vectag = *(stag.possibleActions());
+		for (auto atag : vectag) {
 			TicTacToe stagtag(stag, atag);
 			byte stagtagminimaxval = stagtag.minimaxValue() & 255;
 			if (stagtagminimaxval < min) {
@@ -85,7 +87,7 @@ short TicTacToe::minimaxValue() {
 	return ((short)maxAction << 8) | max;
 }
 
-std::vector<byte>& TicTacToe::possibleActions() {
+std::shared_ptr<std::vector<byte>> TicTacToe::possibleActions() {
 	std::shared_ptr<std::vector<byte>> actions = std::make_shared<std::vector<byte>>();
 	for (byte i = 0; i < 9; i++) {
 		if (validateAction(i)) {
@@ -93,7 +95,7 @@ std::vector<byte>& TicTacToe::possibleActions() {
 		}
 	}
 
-	return *actions;
+	return actions;
 }
 
 char TicTacToe::isGameOver() {
@@ -147,7 +149,7 @@ char TicTacToe::isGameOver() {
 	return 2;
 }
 
-std::string& TicTacToe::toString() {
+std::shared_ptr<std::string> TicTacToe::toString() {
 	std::shared_ptr<std::string> s = std::make_shared<std::string>();
 	for (byte i = 0; i < 3; i++) {
 		for (byte j = 0; j < 3; j++) {
@@ -159,5 +161,5 @@ std::string& TicTacToe::toString() {
 		*s += '\n';
 	}
 
-	return *s;
+	return s;
 }
