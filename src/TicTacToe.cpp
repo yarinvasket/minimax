@@ -39,9 +39,12 @@ void TicTacToe::takeAction(byte a) {
 
 void TicTacToe::takeBestAction() {
 	if (isGameOver()) return;
+	auto actionval = minimaxValue();
+	byte action = actionval >> 8;
+	takeAction(action);
 }
 
-byte TicTacToe::minimaxValue() {
+short TicTacToe::minimaxValue() {
 	char c = isGameOver();
 	if (c) { //Edge cases
 		if (c == -1) return 0;
@@ -55,7 +58,7 @@ byte TicTacToe::minimaxValue() {
 		TicTacToe stag(*this, a);
 		char ctag = stag.isGameOver();
 		if (ctag) {
-			if (ctag == -1) return 2;
+			if (ctag == -1) return ((short)a << 8) | 2;
 			if (1 > max) {
 				max = 1;
 				maxAction = a;
@@ -66,7 +69,7 @@ byte TicTacToe::minimaxValue() {
 		byte minAction;
 		for (auto atag : stag.possibleActions()) {
 			TicTacToe stagtag(stag, atag);
-			auto stagtagminimaxval = stagtag.minimaxValue();
+			byte stagtagminimaxval = stagtag.minimaxValue() & 255;
 			if (stagtagminimaxval < min) {
 				min = stagtagminimaxval;
 				minAction = atag;
@@ -75,11 +78,11 @@ byte TicTacToe::minimaxValue() {
 
 		if (min > max) {
 			max = min;
-			maxAction = minAction;
+			maxAction = a;
 		}
 	}
 
-	return max;
+	return ((short)maxAction << 8) | max;
 }
 
 std::vector<byte>& TicTacToe::possibleActions() {
