@@ -17,6 +17,7 @@ int main() {
 			continue;
 		}
 		std::cout << *(s.toString()) << std::endl;
+		if (s.isGameOver()) break;
 		std::cout << "My turn!" << std::endl;
 		s.takeBestAction();
 		std::cout << *(s.toString()) << std::endl;
