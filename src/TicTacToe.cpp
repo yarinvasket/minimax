@@ -88,8 +88,8 @@ short TicTacToe::minimaxValue() {
 	return ((short)maxAction << 8) | max;
 }
 
-std::shared_ptr<std::vector<byte>> TicTacToe::possibleActions() {
-	std::shared_ptr<std::vector<byte>> actions = std::make_shared<std::vector<byte>>();
+std::unique_ptr<std::vector<byte>> TicTacToe::possibleActions() {
+	std::unique_ptr<std::vector<byte>> actions = std::make_unique<std::vector<byte>>();
 	for (byte i = 0; i < 9; i++) {
 		if (validateAction(i)) {
 			actions->push_back(i);
@@ -150,8 +150,8 @@ char TicTacToe::isGameOver() {
 	return 2;
 }
 
-std::shared_ptr<std::string> TicTacToe::toString() {
-	std::shared_ptr<std::string> s = std::make_shared<std::string>();
+std::unique_ptr<std::string> TicTacToe::toString() {
+	std::unique_ptr<std::string> s = std::make_unique<std::string>();
 	for (byte i = 0; i < 3; i++) {
 		for (byte j = 0; j < 3; j++) {
 			Cell cell = m_board[i][j];

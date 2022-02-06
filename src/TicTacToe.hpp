@@ -25,11 +25,11 @@ class TicTacToe {
 		void takeAction(byte a);
 	//	Take best action using minimax algorithm
 		void takeBestAction();
-		std::shared_ptr<std::vector<byte>> possibleActions();
+		std::unique_ptr<std::vector<byte>> possibleActions();
 		short minimaxValue();
 
 	//	Returns 0 if the game is still going, 1 if current player won, -1 if the opposite player won, and 2 if tie
 		char isGameOver();
 
-		std::shared_ptr<std::string> toString();
+		std::unique_ptr<std::string> toString();
 };
