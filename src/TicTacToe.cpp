@@ -53,7 +53,7 @@ short TicTacToe::minimaxValue() {
 		return 1;
 	}
 
-	byte max = 0;
+	char max = -1;
 	byte maxAction;
 	auto vec = *possibleActions();
 	for (auto a : vec) {
@@ -61,18 +61,22 @@ short TicTacToe::minimaxValue() {
 		char ctag = stag.isGameOver();
 		if (ctag) {
 			if (ctag == -1) return ((short)a << 8) | 2;
-			if (1 > max) {
+			if (ctag == 1 && max < 0) {
+				max = 0;
+				maxAction = a;
+			}
+			if (ctag == 0 && max < 1) {
 				max = 1;
 				maxAction = a;
 			}
 			continue;
 		}
-		byte min = 2;
+		byte min = 3;
 		byte minAction;
 		auto vectag = *(stag.possibleActions());
 		for (auto atag : vectag) {
 			TicTacToe stagtag(stag, atag);
-			byte stagtagminimaxval = stagtag.minimaxValue() & 255;
+			byte stagtagminimaxval = stagtag.minimaxValue() & 0xFF;
 			if (stagtagminimaxval < min) {
 				min = stagtagminimaxval;
 				minAction = atag;
