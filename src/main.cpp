@@ -15,15 +15,22 @@ int main() {
 
 		if (player) {
 			unsigned int action;
-			while (std::cout << "What action would you like to take? " &&
-			!(std::cin >> action) &&
-			!s.validateAction((byte)action)) {
+inp:
+			std::cout << "What action would you like to take? ";
+			std::cin >> action;
+			if (std::cin.fail()) {
 				std::cin.clear();
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 				std::cout << "Invalid action!" << std::endl;
+				goto inp;
+			}
+			if (!s.validateAction((byte)action)) {
+				std::cout << "Invalid action!" << std::endl;
+				goto inp;
 			}
 			s.takeAction((byte)action);
 		}
+
 		else {
 			s.takeBestAction();
 		}
