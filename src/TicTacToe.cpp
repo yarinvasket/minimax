@@ -65,7 +65,7 @@ short TicTacToe::minimaxValue() {
 				max = 0;
 				maxAction = a;
 			}
-			if (ctag == 0 && max < 1) {
+			if (ctag == 2 && max < 1) {
 				max = 1;
 				maxAction = a;
 			}
