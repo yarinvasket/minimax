@@ -48,11 +48,20 @@ void TicTacToe::takeAction(byte a) {
 	m_player = !m_player;
 }
 
-void TicTacToe::takeBestAction() {
-//	if (isGameOver()) return;
-//	auto actionval = minimaxValue();
-//	byte action = actionval >> 8;
-//	takeAction(action);
+void TicTacToe::takeBestAction(std::array<byte, 19683> &T) {
+	if (isGameOver()) return;
+	char max = -1;
+	byte action;
+	auto vec = *(possibleActions());
+	for (auto a : vec) {
+		TicTacToe stag(*this, a);
+		auto fitness = T[ToNum::toNum(stag.m_board)];
+		if (fitness > max) {
+			max = fitness;
+			action = a;
+		}
+	}
+	takeAction(action);
 }
 
 byte TicTacToe::minimaxValue(std::array<byte, 19683> &T) {

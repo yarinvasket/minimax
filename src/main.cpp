@@ -42,7 +42,7 @@ inp:
 		}
 
 		else {
-			s.takeBestAction();
+			s.takeBestAction(T);
 		}
 		std::cout << *(s.toString()) << std::endl;
 	}

@@ -27,7 +27,7 @@ class TicTacToe {
 		bool validateAction(byte a);
 		void takeAction(byte a);
 	//	Take best action using minimax algorithm
-		void takeBestAction();
+		void takeBestAction(std::array<byte, 19683> &T);
 		std::unique_ptr<std::vector<byte>> possibleActions();
 		byte minimaxValue(std::array<byte, 19683> &T);
 
