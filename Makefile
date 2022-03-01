@@ -7,7 +7,7 @@ all : bin/TicTacToe.o bin/ToNum.o src/main.cpp
 debug : FLAGS = -g
 debug : all
 
-bin/TicTacToe.o : bin/ToNum.o src/TicTacToe.hpp src/TicTacToe.cpp
+bin/TicTacToe.o : src/TicTacToe.hpp src/TicTacToe.cpp
 	mkdir -p bin
 	$(cc) $(FLAGS) -c -o bin/TicTacToe.o src/TicTacToe.cpp
 
