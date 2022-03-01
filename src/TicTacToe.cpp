@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include <memory>
+#include <array>
 
 TicTacToe::TicTacToe() {
 	for (byte i = 0; i < 3; i++) {
@@ -29,6 +30,14 @@ TicTacToe::TicTacToe(TicTacToe& s, byte a) : TicTacToe::TicTacToe(s) {
 	takeAction(a);
 }
 
+TicTacToe::TicTacToe(std::array<std::array<Cell, 3>, 3> board) {
+	for (byte i = 0; i < 3; i++) {
+		for (byte j = 0; j < 3; j++) {
+			m_board[i][j] = board[i][j];
+		}
+	}
+}
+
 bool TicTacToe::validateAction(byte a) {
 	if (a < 0 || a > 8) return false;
 	return m_board[a / 3][a % 3] == Cell::BLANK;
@@ -47,7 +56,7 @@ void TicTacToe::takeBestAction() {
 }
 
 byte TicTacToe::minimaxValue(std::array<byte, 19683> &T) {
-	auto idx = toNum(m_board);
+	auto idx = ToNum::toNum(m_board);
 	if (T[idx] < 255) return T[idx];
 	auto c = isGameOver();
 	if (c) { //Edge cases

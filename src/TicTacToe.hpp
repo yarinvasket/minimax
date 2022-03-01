@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <array>
 
 using byte = unsigned char;
 using sbyte = char;
@@ -20,6 +21,8 @@ class TicTacToe {
 		TicTacToe(TicTacToe& s);
 	//	Copy TicTacToe game and take action a
 		TicTacToe(TicTacToe& s, byte a);
+	//	Take board array and start with player X
+		TicTacToe(std::array<std::array<Cell, 3>, 3> board);
 
 		bool validateAction(byte a);
 		void takeAction(byte a);

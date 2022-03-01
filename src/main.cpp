@@ -2,8 +2,18 @@
 #include <string>
 #include <limits>
 #include "TicTacToe.hpp"
+#include "ToNum.hpp"
 
 int main() {
+	std::array<byte, 19683> T;
+	for (unsigned int i = 0; i < 19683; i++) {
+		T[i] = 255;
+	}
+	for (unsigned int i = 0; i < 19683; i++) {
+		TicTacToe t(ToNum::toBoard(i));
+		t.minimaxValue(T);
+	}
+
 	TicTacToe s;
 	while (!s.isGameOver()) {
 		unsigned int player;
