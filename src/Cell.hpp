@@ -1,5 +1,5 @@
 #pragma once
 
-enum Cell {
+enum Cell : unsigned char{
 	BLANK = 0, X, O
 };
