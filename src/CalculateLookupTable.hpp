@@ -40,9 +40,9 @@ constexpr byte minimaxValue(TicTacToe &t, std::array<byte, 19683> &lookup) {
 
 	char max = -1;
 	byte maxAction = 0;
-	auto vec = *(t.possibleActions());
-	for (auto a : vec) {
-		TicTacToe stag(t, a);
+	for (auto i = 0; i < 9; i++) {
+		if (!t.validateAction(i)) continue;
+		TicTacToe stag(t, i);
 		char ctag = stag.isGameOver();
 		if (ctag) {
 			if (ctag == -1) {
@@ -51,29 +51,29 @@ constexpr byte minimaxValue(TicTacToe &t, std::array<byte, 19683> &lookup) {
 			}
 			if (ctag == 1 && max < 0) {
 				max = 0;
-				maxAction = a;
+				maxAction = i;
 			}
 			if (ctag == 2 && max < 1) {
 				max = 1;
-				maxAction = a;
+				maxAction = i;
 			}
 			continue;
 		}
 		byte min = 3;
 		byte minAction = 0;
-		auto vectag = *(stag.possibleActions());
-		for (auto atag : vectag) {
-			TicTacToe stagtag(stag, atag);
+		for (auto j = 0; j < 9; j++) {
+			if (!stag.validateAction(j)) continue;
+			TicTacToe stagtag(stag, i);
 			byte stagtagminimaxval = minimaxValue(t, lookup);
 			if (stagtagminimaxval < min) {
 				min = stagtagminimaxval;
-				minAction = atag;
+				minAction = j;
 			}
 		}
 
 		if (min > max) {
 			max = min;
-			maxAction = a;
+			maxAction = i;
 		}
 	}
 
@@ -91,7 +91,11 @@ constexpr std::array<byte, 19683> calculateLookupTable() {
 		for (auto j = 0; j < 9; j++) {
 			board[j / 3][j % 3] = (Cell)((i / intpow(3, j)) % 3);
 		}
-		TicTacToe s(board);
+	//	TicTacToe s(board);
+		TicTacToe s = TicTacToe();
+		for (auto i = 0; i < 9; i++) {
+			s.m_board[i / 3][i % 3] = board[i / 3][i % 3];
+		}
 		arr[i] = minimaxValue(s, arr);
 	}
 	return arr;

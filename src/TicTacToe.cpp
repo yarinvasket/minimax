@@ -7,8 +7,6 @@
 #include <iostream>
 #include <memory>
 
-constexpr std::array<byte, 19683> T = calculateLookupTable();
-
 constexpr TicTacToe::TicTacToe() {
 	for (byte i = 0; i < 3; i++) {
 		for (byte j = 0; j < 3; j++) {

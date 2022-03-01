@@ -2,8 +2,10 @@
 #include <string>
 #include <limits>
 #include "TicTacToe.hpp"
+#include "CalculateLookupTable.hpp"
 
 int main() {
+	constexpr std::array<byte, 19683> T = calculateLookupTable();
 	TicTacToe s;
 	while (!s.isGameOver()) {
 		unsigned int player;
