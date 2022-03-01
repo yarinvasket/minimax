@@ -1,10 +1,13 @@
 #include "TicTacToe.hpp"
+#include "CalculateLookupTable.hpp"
 #include <cstddef>
 #include "Cell.hpp"
 #include <vector>
 #include <string>
 #include <iostream>
 #include <memory>
+
+constexpr std::array<byte, 19683> T = calculateLookupTable();
 
 TicTacToe::TicTacToe() {
 	for (byte i = 0; i < 3; i++) {
@@ -28,6 +31,15 @@ TicTacToe::TicTacToe(TicTacToe& s, byte a) : TicTacToe::TicTacToe(s) {
 	takeAction(a);
 }
 
+TicTacToe::TicTacToe(const Cell[3][3] &board) {
+	for (auto i = 0; i < 3; i++) {
+		for (auto j = 0; j < 3; j++) {
+			m_board[i][j] = board[i][j];
+		}
+	}
+	m_player = true;
+}
+
 bool TicTacToe::validateAction(byte a) {
 	if (a < 0 || a > 8) return false;
 	return m_board[a / 3][a % 3] == Cell::BLANK;
@@ -43,53 +55,6 @@ void TicTacToe::takeBestAction() {
 	auto actionval = minimaxValue();
 	byte action = actionval >> 8;
 	takeAction(action);
-}
-
-short TicTacToe::minimaxValue() {
-	char c = isGameOver();
-	if (c) { //Edge cases
-		if (c == -1) return 0;
-		if (c == 1) return 2;
-		return 1;
-	}
-
-	char max = -1;
-	byte maxAction;
-	auto vec = *possibleActions();
-	for (auto a : vec) {
-		TicTacToe stag(*this, a);
-		char ctag = stag.isGameOver();
-		if (ctag) {
-			if (ctag == -1) return ((short)a << 8) | 2;
-			if (ctag == 1 && max < 0) {
-				max = 0;
-				maxAction = a;
-			}
-			if (ctag == 2 && max < 1) {
-				max = 1;
-				maxAction = a;
-			}
-			continue;
-		}
-		byte min = 3;
-		byte minAction;
-		auto vectag = *(stag.possibleActions());
-		for (auto atag : vectag) {
-			TicTacToe stagtag(stag, atag);
-			byte stagtagminimaxval = stagtag.minimaxValue() & 0xFF;
-			if (stagtagminimaxval < min) {
-				min = stagtagminimaxval;
-				minAction = atag;
-			}
-		}
-
-		if (min > max) {
-			max = min;
-			maxAction = a;
-		}
-	}
-
-	return ((short)maxAction << 8) | max;
 }
 
 std::unique_ptr<std::vector<byte>> TicTacToe::possibleActions() {
