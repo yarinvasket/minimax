@@ -45,11 +45,13 @@ void TicTacToe::takeBestAction() {
 	takeAction(action);
 }
 
-short TicTacToe::minimaxValue() {
+byte TicTacToe::minimaxValue(std::array<byte, 19683> T) {
 	char c = isGameOver();
 	if (c) { //Edge cases
-		if (c == -1) return 0;
-		if (c == 1) return 2;
+		byte val = 1;
+		if (c == -1) val = 0;
+		if (c == 1) val = 2;
+		T[idx] 
 		return 1;
 	}
 
