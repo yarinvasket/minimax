@@ -11,18 +11,18 @@ using sbyte = char;
 
 class TicTacToe {
 	public:
-		Cell m_board[3][3];
+		Cell m_board[3][3] = {};
 	//	True for player X, false for player O
-		bool m_player;
+		bool m_player = true;
 
 	//	Build Empty TicTacToe game with starting player X
-		TicTacToe();
+		constexpr TicTacToe();
 	//	Copy constructor
-		TicTacToe(TicTacToe& s);
+		constexpr TicTacToe(TicTacToe& s);
 	//	Copy TicTacToe game and take action a
-		TicTacToe(TicTacToe& s, byte a);
+		constexpr TicTacToe(TicTacToe& s, byte a);
 	//	Build TicTacToe game with given board and starting player X
-		TicTacToe(const Cell[3][3] &board);
+		constexpr TicTacToe(const Cell (&board)[3][3]);
 
 		bool validateAction(byte a);
 		void takeAction(byte a);
