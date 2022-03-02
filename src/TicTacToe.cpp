@@ -36,6 +36,7 @@ TicTacToe::TicTacToe(std::array<std::array<Cell, 3>, 3> board) {
 			m_board[i][j] = board[i][j];
 		}
 	}
+	m_player = true;
 }
 
 void TicTacToe::reverse() {
@@ -63,32 +64,18 @@ void TicTacToe::takeAction(byte a) {
 
 void TicTacToe::takeBestAction(std::array<byte, 19683> &T) {
 	if (isGameOver()) return;
-	char max = -1;
-	byte action;
-	auto vec = *(possibleActions());
-	for (auto a : vec) {
-		TicTacToe stag(*this, a);
-		auto fitness = T[ToNum::toNum(stag.m_board)];
-		if (fitness > max) {
-			max = fitness;
-			action = a;
-		}
-	}
-	takeAction(action);
+	takeAction(T[ToNum::toNum(*this)] / 3);
 }
 
-byte TicTacToe::minimaxValue(std::array<byte, 19683> &T) {
-	TicTacToe rev(*this);
-	if (!rev.m_player) rev.reverse();
-	auto idx = ToNum::toNum(rev.m_board);
-	if (T[idx] < 255) return T[idx];
+void TicTacToe::minimaxValue(std::array<byte, 19683> &T) {
+	auto idx = ToNum::toNum(*this);
+	if (T[idx] < 255) return;
 	auto c = isGameOver();
 	if (c) { //Edge cases
 		byte val = 1;
 		if (c == -1) val = 0;
 		if (c == 1) val = 2;
-		T[idx] = val; 
-		return val;
+		T[idx] = val;
 	}
 
 	char max = -1;
@@ -99,8 +86,8 @@ byte TicTacToe::minimaxValue(std::array<byte, 19683> &T) {
 		auto ctag = stag.isGameOver();
 		if (ctag) {
 			if (ctag == -1) {
-				T[idx] = 2;
-				return 2;
+				T[idx] =  3 * a + 2;
+				return;
 			}
 			if (ctag == 1 && max < 0) {
 				max = 0;
@@ -113,14 +100,13 @@ byte TicTacToe::minimaxValue(std::array<byte, 19683> &T) {
 			continue;
 		}
 		byte min = 3;
-		byte minAction;
 		auto vectag = *(stag.possibleActions());
 		for (auto atag : vectag) {
 			TicTacToe stagtag(stag, atag);
-			byte stagtagminimaxval = stagtag.minimaxValue(T);
+			stagtag.minimaxValue(T);
+			byte stagtagminimaxval = T[ToNum::toNum(stagtag)] % 3;
 			if (stagtagminimaxval < min) {
 				min = stagtagminimaxval;
-				minAction = atag;
 			}
 		}
 
@@ -130,8 +116,7 @@ byte TicTacToe::minimaxValue(std::array<byte, 19683> &T) {
 		}
 	}
 
-	T[idx] = max;
-	return max;
+	T[idx] = 3 * maxAction + max;
 }
 
 std::unique_ptr<std::vector<byte>> TicTacToe::possibleActions() {

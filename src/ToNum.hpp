@@ -5,7 +5,7 @@
 #include "TicTacToe.hpp"
 
 namespace ToNum {
-	unsigned int toNum(const Cell (&board)[3][3]);
+	unsigned int toNum(TicTacToe &s);
 
-	std::array<std::array<Cell, 3>, 3> toBoard(unsigned int num);
+	TicTacToe toBoard(unsigned int num);
 }
