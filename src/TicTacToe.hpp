@@ -23,6 +23,8 @@ class TicTacToe {
 		TicTacToe(TicTacToe& s, byte a);
 	//	Take board array and start with player X
 		TicTacToe(std::array<std::array<Cell, 3>, 3> board);
+	//	Reverse the game, such that all Xses become Os
+		void reverse();
 
 		bool validateAction(byte a);
 		void takeAction(byte a);

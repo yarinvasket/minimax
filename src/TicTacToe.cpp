@@ -38,6 +38,19 @@ TicTacToe::TicTacToe(std::array<std::array<Cell, 3>, 3> board) {
 	}
 }
 
+void TicTacToe::reverse() {
+	for (byte i = 0; i < 3; i++) {
+		for (byte j = 0; j < 3; j++) {
+			if (m_board[i][j] == Cell::BLANK) continue;
+			else {
+			//	Turn Xes into Os and Os into Xs
+				m_board[i][j] = (Cell)(m_board[i][j] ^ 0b11);
+			}
+		}
+	}
+	m_player = !m_player;
+}
+
 bool TicTacToe::validateAction(byte a) {
 	if (a < 0 || a > 8) return false;
 	return m_board[a / 3][a % 3] == Cell::BLANK;
@@ -65,7 +78,9 @@ void TicTacToe::takeBestAction(std::array<byte, 19683> &T) {
 }
 
 byte TicTacToe::minimaxValue(std::array<byte, 19683> &T) {
-	auto idx = ToNum::toNum(m_board);
+	TicTacToe rev(*this);
+	if (!rev.m_player) rev.reverse();
+	auto idx = ToNum::toNum(rev.m_board);
 	if (T[idx] < 255) return T[idx];
 	auto c = isGameOver();
 	if (c) { //Edge cases
