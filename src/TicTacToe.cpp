@@ -76,6 +76,7 @@ void TicTacToe::minimaxValue(std::array<byte, 19683> &T) {
 		if (c == -1) val = 0;
 		if (c == 1) val = 2;
 		T[idx] = val;
+		return;
 	}
 
 	char max = -1;
