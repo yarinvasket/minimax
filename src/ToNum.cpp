@@ -14,7 +14,7 @@ unsigned int ToNum::toNum(const Cell (&board)[3][3]) {
 
 std::array<std::array<Cell, 3>, 3> ToNum::toBoard(unsigned int num) {
 	std::array<std::array<Cell, 3>, 3> board;
-	for (auto i = 8; i >= 0; i--) {
+	for (char i = 8; i >= 0; i--) {
 		board[i / 3][i % 3] = (Cell)(num % 3);
 		num /= 3;
 	}
