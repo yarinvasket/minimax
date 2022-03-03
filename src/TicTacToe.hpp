@@ -31,7 +31,6 @@ class TicTacToe {
 	//	Take best action using minimax algorithm
 		constexpr void takeBestAction(std::array<byte, 19683> &T);
 		constexpr void minimaxValue(std::array<byte, 19683> &T);
-		static constexpr std::array<byte, 19683> calculateLookupTable();
 
 	//	Returns 0 if the game is still going, 1 if current player won, -1 if the opposite player won, and 2 if tie
 		constexpr char isGameOver();

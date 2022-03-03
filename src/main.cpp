@@ -3,9 +3,10 @@
 #include <limits>
 #include "TicTacToe.hpp"
 #include "ToNum.hpp"
+#include "CalculateLookupTable.hpp"
 
 int main() {
-	constexpr std::array<byte, 19683> T = TicTacToe::calculateLookupTable();
+	constexpr std::array<byte, 19683> T = CalculateLookupTable::calculateLookupTable();
 
 	TicTacToe s;
 	while (!s.isGameOver()) {

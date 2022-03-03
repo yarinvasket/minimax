@@ -118,19 +118,6 @@ constexpr void TicTacToe::minimaxValue(std::array<byte, 19683> &T) {
 	T[idx] = 3 * maxAction + max;
 }
 
-static constexpr std::array<byte, 19683> TicTacToe::calculateLookupTable() {
-	std::array<byte, 19683> T{};
-	for (unsigned int i = 0; i < 19683; i++) {
-		T[i] = 255;
-	}
-	for (unsigned int i = 0; i < 19683; i++) {
-		TicTacToe t(ToNum::toBoard(i));
-		t.minimaxValue(T);
-	}
-
-	return T;
-}
-
 constexpr char TicTacToe::isGameOver() {
 	for (byte i = 0; i < 3; i++) {
 		if (m_board[i][0] == m_board[i][1] && m_board[i][1] == m_board[i][2]) {
