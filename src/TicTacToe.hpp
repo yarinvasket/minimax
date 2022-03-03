@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Cell.hpp"
-#include "ToNum.hpp"
+//#include "ToNum.hpp"
 #include <cstddef>
 #include <vector>
 #include <string>
@@ -76,63 +76,9 @@ class TicTacToe {
 	}
 
 //	Take best action using minimax algorithm
-	void takeBestAction(const std::array<byte, 19683> &T) {
-		if (isGameOver()) return;
-		takeAction(T[ToNum::toNum(*this)] / 3);
-	}
+	void takeBestAction(const std::array<byte, 19683> &T);
 
-	constexpr void minimaxValue(std::array<byte, 19683> &T) {
-		auto idx = ToNum::toNum(*this);
-		if (T[idx] < 255) return;
-		auto c = isGameOver();
-		if (c) { //Edge cases
-			byte val = 1;
-			if (c == -1) val = 0;
-			if (c == 1) val = 2;
-			T[idx] = val;
-			return;
-		}
-
-		char max = -1;
-		byte maxAction = 0;
-		for (byte a = 0; a < 9; a++) {
-			if (!validateAction(a)) continue;
-			TicTacToe stag(*this, a);
-			auto ctag = stag.isGameOver();
-			if (ctag) {
-				if (ctag == -1) {
-					T[idx] =  3 * a + 2;
-					return;
-				}
-				if (ctag == 1 && max < 0) {
-					max = 0;
-					maxAction = a;
-				}
-				if (ctag == 2 && max < 1) {
-					max = 1;
-					maxAction = a;
-				}
-				continue;
-			}
-			byte min = 3;
-			for (byte atag = 0; atag < 9; atag++) {
-				if (!stag.validateAction(atag)) continue;
-				TicTacToe stagtag(stag, atag);
-				stagtag.minimaxValue(T);
-				byte stagtagminimaxval = T[ToNum::toNum(stagtag)] % 3;
-				if (stagtagminimaxval < min) {
-					min = stagtagminimaxval;
-				}
-			}
-
-			if (min > max) {
-				max = min;
-				maxAction = a;
-			}
-		}
-
-		T[idx] = 3 * maxAction + max;
-	}
+	constexpr void minimaxValue(std::array<byte, 19683> &T);
 
 //	Returns 0 if the game is still going, 1 if current player won, -1 if the opposite player won, and 2 if tie
 	constexpr char isGameOver() {
@@ -201,3 +147,62 @@ class TicTacToe {
 		return s;
 	}
 };
+
+#include "ToNum.hpp"
+constexpr void TicTacToe::minimaxValue(std::array<byte, 19683> &T) {
+	auto idx = ToNum::toNum(*this);
+	if (T[idx] < 255) return;
+	auto c = isGameOver();
+	if (c) { //Edge cases
+		byte val = 1;
+		if (c == -1) val = 0;
+		if (c == 1) val = 2;
+		T[idx] = val;
+		return;
+	}
+
+	char max = -1;
+	byte maxAction = 0;
+	for (byte a = 0; a < 9; a++) {
+		if (!validateAction(a)) continue;
+		TicTacToe stag(*this, a);
+		auto ctag = stag.isGameOver();
+		if (ctag) {
+			if (ctag == -1) {
+				T[idx] =  3 * a + 2;
+				return;
+			}
+			if (ctag == 1 && max < 0) {
+				max = 0;
+				maxAction = a;
+			}
+			if (ctag == 2 && max < 1) {
+				max = 1;
+				maxAction = a;
+			}
+			continue;
+		}
+		byte min = 3;
+		for (byte atag = 0; atag < 9; atag++) {
+			if (!stag.validateAction(atag)) continue;
+			TicTacToe stagtag(stag, atag);
+			stagtag.minimaxValue(T);
+			byte stagtagminimaxval = T[ToNum::toNum(stagtag)] % 3;
+			if (stagtagminimaxval < min) {
+				min = stagtagminimaxval;
+			}
+		}
+
+		if (min > max) {
+			max = min;
+			maxAction = a;
+		}
+	}
+
+	T[idx] = 3 * maxAction + max;
+}
+
+void TicTacToe::takeBestAction(const std::array<byte, 19683> &T) {
+	if (isGameOver()) return;
+	takeAction(T[ToNum::toNum(*this)] / 3);
+}
