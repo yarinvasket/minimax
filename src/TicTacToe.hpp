@@ -30,7 +30,6 @@ class TicTacToe {
 		constexpr void takeAction(byte a);
 	//	Take best action using minimax algorithm
 		constexpr void takeBestAction(std::array<byte, 19683> &T);
-		constexpr std::unique_ptr<std::vector<byte>> possibleActions();
 		constexpr void minimaxValue(std::array<byte, 19683> &T);
 		static constexpr std::array<byte, 19683> calculateLookupTable();
 

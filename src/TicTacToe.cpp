@@ -79,8 +79,8 @@ constexpr void TicTacToe::minimaxValue(std::array<byte, 19683> &T) {
 
 	char max = -1;
 	byte maxAction = 0;
-	auto vec = *possibleActions();
-	for (auto a : vec) {
+	for (byte a = 0; a < 9; a++) {
+		if (!validateAction(a)) continue;
 		TicTacToe stag(*this, a);
 		auto ctag = stag.isGameOver();
 		if (ctag) {
@@ -99,8 +99,8 @@ constexpr void TicTacToe::minimaxValue(std::array<byte, 19683> &T) {
 			continue;
 		}
 		byte min = 3;
-		auto vectag = *(stag.possibleActions());
-		for (auto atag : vectag) {
+		for (byte atag = 0; atag < 9; atag++) {
+			if (!stag.validateAction(atag)) continue;
 			TicTacToe stagtag(stag, atag);
 			stagtag.minimaxValue(T);
 			byte stagtagminimaxval = T[ToNum::toNum(stagtag)] % 3;
@@ -129,17 +129,6 @@ static constexpr std::array<byte, 19683> calculateLookupTable() {
 	}
 
 	return T;
-}
-
-constexpr std::unique_ptr<std::vector<byte>> TicTacToe::possibleActions() {
-	std::unique_ptr<std::vector<byte>> actions = std::make_unique<std::vector<byte>>();
-	for (byte i = 0; i < 9; i++) {
-		if (validateAction(i)) {
-			actions->push_back(i);
-		}
-	}
-
-	return actions;
 }
 
 constexpr char TicTacToe::isGameOver() {
