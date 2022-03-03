@@ -5,7 +5,7 @@
 #include "TicTacToe.hpp"
 
 namespace ToNum {
-	unsigned int toNum(TicTacToe &s);
+	constexpr unsigned int toNum(TicTacToe &s);
 
-	TicTacToe toBoard(unsigned int num);
+	constexpr TicTacToe toBoard(unsigned int num);
 }

@@ -3,7 +3,7 @@
 #include "TicTacToe.hpp"
 #include "Cell.hpp"
 
-unsigned int ToNum::toNum(TicTacToe &s) {
+constexpr unsigned int ToNum::toNum(TicTacToe &s) {
 	TicTacToe rev(s);
 	if (!rev.m_player) rev.reverse();
 	unsigned int num = 0;
@@ -15,7 +15,7 @@ unsigned int ToNum::toNum(TicTacToe &s) {
 	return num;
 }
 
-TicTacToe ToNum::toBoard(unsigned int num) {
+constexpr TicTacToe ToNum::toBoard(unsigned int num) {
 	TicTacToe s;
 	for (char i = 8; i >= 0; i--) {
 		s.m_board[i / 3][i % 3] = (Cell)(num % 3);
