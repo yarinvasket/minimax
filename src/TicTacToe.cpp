@@ -60,7 +60,7 @@ constexpr void TicTacToe::takeAction(byte a) {
 	m_player = !m_player;
 }
 
-constexpr void TicTacToe::takeBestAction(std::array<byte, 19683> &T) {
+void TicTacToe::takeBestAction(const std::array<byte, 19683> &T) {
 	if (isGameOver()) return;
 	takeAction(T[ToNum::toNum(*this)] / 3);
 }
