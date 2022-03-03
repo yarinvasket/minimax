@@ -78,7 +78,7 @@ constexpr void TicTacToe::minimaxValue(std::array<byte, 19683> &T) {
 	}
 
 	char max = -1;
-	byte maxAction;
+	byte maxAction = 0;
 	auto vec = *possibleActions();
 	for (auto a : vec) {
 		TicTacToe stag(*this, a);
