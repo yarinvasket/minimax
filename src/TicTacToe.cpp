@@ -8,7 +8,7 @@
 #include <memory>
 #include <array>
 
-TicTacToe::TicTacToe() {
+constexpr TicTacToe::TicTacToe() {
 	for (byte i = 0; i < 3; i++) {
 		for (byte j = 0; j < 3; j++) {
 			m_board[i][j] = Cell::BLANK;
@@ -17,7 +17,7 @@ TicTacToe::TicTacToe() {
 	m_player = true;
 }
 
-TicTacToe::TicTacToe(TicTacToe& s) {
+constexpr TicTacToe::TicTacToe(TicTacToe& s) {
 	for (byte i = 0; i < 3; i++) {
 		for (byte j = 0; j < 3; j++) {
 			m_board[i][j] = s.m_board[i][j];
@@ -26,11 +26,11 @@ TicTacToe::TicTacToe(TicTacToe& s) {
 	m_player = s.m_player;
 }
 
-TicTacToe::TicTacToe(TicTacToe& s, byte a) : TicTacToe::TicTacToe(s) {
+constexpr TicTacToe::TicTacToe(TicTacToe& s, byte a) : TicTacToe::TicTacToe(s) {
 	takeAction(a);
 }
 
-TicTacToe::TicTacToe(std::array<std::array<Cell, 3>, 3> board) {
+constexpr TicTacToe::TicTacToe(std::array<std::array<Cell, 3>, 3> board) {
 	for (byte i = 0; i < 3; i++) {
 		for (byte j = 0; j < 3; j++) {
 			m_board[i][j] = board[i][j];
@@ -39,7 +39,7 @@ TicTacToe::TicTacToe(std::array<std::array<Cell, 3>, 3> board) {
 	m_player = true;
 }
 
-void TicTacToe::reverse() {
+constexpr void TicTacToe::reverse() {
 	for (byte i = 0; i < 3; i++) {
 		for (byte j = 0; j < 3; j++) {
 			if (m_board[i][j] == Cell::BLANK) continue;
@@ -52,22 +52,22 @@ void TicTacToe::reverse() {
 	m_player = !m_player;
 }
 
-bool TicTacToe::validateAction(byte a) {
+constexpr bool TicTacToe::validateAction(byte a) {
 	if (a < 0 || a > 8) return false;
 	return m_board[a / 3][a % 3] == Cell::BLANK;
 }
 
-void TicTacToe::takeAction(byte a) {
+constexpr void TicTacToe::takeAction(byte a) {
 	m_board[a / 3][a % 3] = m_player ? X : O;
 	m_player = !m_player;
 }
 
-void TicTacToe::takeBestAction(std::array<byte, 19683> &T) {
+constexpr void TicTacToe::takeBestAction(std::array<byte, 19683> &T) {
 	if (isGameOver()) return;
 	takeAction(T[ToNum::toNum(*this)] / 3);
 }
 
-void TicTacToe::minimaxValue(std::array<byte, 19683> &T) {
+constexpr void TicTacToe::minimaxValue(std::array<byte, 19683> &T) {
 	auto idx = ToNum::toNum(*this);
 	if (T[idx] < 255) return;
 	auto c = isGameOver();
@@ -120,7 +120,20 @@ void TicTacToe::minimaxValue(std::array<byte, 19683> &T) {
 	T[idx] = 3 * maxAction + max;
 }
 
-std::unique_ptr<std::vector<byte>> TicTacToe::possibleActions() {
+static constexpr std::array<byte, 19683> calculateLookupTable() {
+	std::array<byte, 19683> T{};
+	for (unsigned int i = 0; i < 19683; i++) {
+		T[i] = 255;
+	}
+	for (unsigned int i = 0; i < 19683; i++) {
+		TicTacToe t(ToNum::toBoard(i));
+		t.minimaxValue(T);
+	}
+
+	return T;
+}
+
+constexpr std::unique_ptr<std::vector<byte>> TicTacToe::possibleActions() {
 	std::unique_ptr<std::vector<byte>> actions = std::make_unique<std::vector<byte>>();
 	for (byte i = 0; i < 9; i++) {
 		if (validateAction(i)) {
@@ -131,7 +144,7 @@ std::unique_ptr<std::vector<byte>> TicTacToe::possibleActions() {
 	return actions;
 }
 
-char TicTacToe::isGameOver() {
+constexpr char TicTacToe::isGameOver() {
 	for (byte i = 0; i < 3; i++) {
 		if (m_board[i][0] == m_board[i][1] && m_board[i][1] == m_board[i][2]) {
 			Cell cell = m_board[i][0];

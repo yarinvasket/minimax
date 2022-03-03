@@ -5,7 +5,7 @@
 #include "ToNum.hpp"
 
 int main() {
-	std::array<byte, 19683> T;
+	std::array<byte, 19683> T = TicTacToe::calculateLookupTable();
 	for (unsigned int i = 0; i < 19683; i++) {
 		T[i] = 255;
 	}

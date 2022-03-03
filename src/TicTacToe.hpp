@@ -16,25 +16,26 @@ class TicTacToe {
 		bool m_player;
 
 	//	Build Empty TicTacToe game with starting player X
-		TicTacToe();
+		constexpr TicTacToe();
 	//	Copy constructor
-		TicTacToe(TicTacToe& s);
+		constexpr TicTacToe(TicTacToe& s);
 	//	Copy TicTacToe game and take action a
-		TicTacToe(TicTacToe& s, byte a);
+		constexpr TicTacToe(TicTacToe& s, byte a);
 	//	Take board array and start with player X
-		TicTacToe(std::array<std::array<Cell, 3>, 3> board);
+		constexpr TicTacToe(std::array<std::array<Cell, 3>, 3> board);
 	//	Reverse the game, such that all Xses become Os
-		void reverse();
+		constexpr void reverse();
 
-		bool validateAction(byte a);
-		void takeAction(byte a);
+		constexpr bool validateAction(byte a);
+		constexpr void takeAction(byte a);
 	//	Take best action using minimax algorithm
-		void takeBestAction(std::array<byte, 19683> &T);
-		std::unique_ptr<std::vector<byte>> possibleActions();
-		void minimaxValue(std::array<byte, 19683> &T);
+		constexpr void takeBestAction(std::array<byte, 19683> &T);
+		constexpr std::unique_ptr<std::vector<byte>> possibleActions();
+		constexpr void minimaxValue(std::array<byte, 19683> &T);
+		static constexpr std::array<byte, 19683> calculateLookupTable();
 
 	//	Returns 0 if the game is still going, 1 if current player won, -1 if the opposite player won, and 2 if tie
-		char isGameOver();
+		constexpr char isGameOver();
 
 		std::unique_ptr<std::string> toString();
 };
