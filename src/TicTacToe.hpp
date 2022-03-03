@@ -11,9 +11,9 @@ using sbyte = char;
 
 class TicTacToe {
 	public:
-		Cell m_board[3][3];
+		Cell m_board[3][3] = {};
 	//	True for player X, false for player O
-		bool m_player;
+		bool m_player = true;
 
 	//	Build Empty TicTacToe game with starting player X
 		constexpr TicTacToe();

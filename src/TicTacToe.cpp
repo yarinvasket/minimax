@@ -14,7 +14,6 @@ constexpr TicTacToe::TicTacToe() {
 			m_board[i][j] = Cell::BLANK;
 		}
 	}
-	m_player = true;
 }
 
 constexpr TicTacToe::TicTacToe(TicTacToe& s) {
@@ -36,7 +35,6 @@ constexpr TicTacToe::TicTacToe(std::array<std::array<Cell, 3>, 3> board) {
 			m_board[i][j] = board[i][j];
 		}
 	}
-	m_player = true;
 }
 
 constexpr void TicTacToe::reverse() {
